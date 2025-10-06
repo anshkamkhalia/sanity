@@ -199,7 +199,7 @@ def ai():
     if auth_redirect: 
         return auth_redirect
 
-    api_key = "AIzaSyDyS_S4HBPOl4HOO2pxRYPJWlvVt0vUdlc" # Key
+    api_key = "your_key_here" # Key
     
     if not api_key: 
         return jsonify({"reply": "API key not found. Please set GEMINI_API_KEY."})
@@ -503,3 +503,4 @@ def check_in():
 # ---------------- RUN ----------------
 if __name__ == "__main__":
     app.run(debug=True)
+
