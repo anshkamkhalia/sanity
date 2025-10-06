@@ -1,0 +1,112 @@
+{% extends "layout.html" %} {% block title %}Dashboard{% endblock %} {% block
+content %}
+<script>
+  // Hides navbar
+  document.getElementsByClassName("ss-navbar")[0].remove();
+  document.getElementsByTagName("main")[0].classList.remove("pt-[75px]");
+</script>
+
+<style>
+  .ss-navbar {
+    display: none !important;
+  }
+</style>
+
+<div
+  class="flex flex-row min-h-screen bg-gradient-to-br from-sky-50 to-indigo-50"
+>
+  <!-- Sidebar -->
+  <aside
+    class="w-[220px] border-r border-gray-300 bg-white/70 backdrop-blur-lg flex flex-col p-5 shadow-sm"
+  >
+    <a href="/">
+      <img
+        width="30"
+        height="30"
+        src="https://img.icons8.com/color/48/foam-bubbles.png"
+        alt="foam-bubbles"
+      />
+      <h2 class="flex text-xl font-extrabold text-sky-500 tracking-tight mb-8">
+        SanityStation
+      </h2>
+    </a>
+
+    <!-- Main Dashboard -->
+    <a
+      href="/dashboard/"
+      class="px-3 py-1 rounded-md hover:bg-sky-50 
+      {{ 'bg-sky-200 text-sky-800' if tab == 'main' else 'text-gray-700' }}"
+    >
+      🏠 &nbsp;Dashboard
+    </a>
+
+    <!-- Mindfulness & Tools -->
+
+    <div class="mt-2 flex flex-col gap-2">
+      <a
+        href="/dashboard/journal"
+        class="px-3 py-1 rounded-md hover:bg-sky-50 
+          {{ 'bg-sky-200 text-sky-800' if tab == 'journal' else 'text-gray-700' }}"
+      >
+        📓 &nbsp;Journal
+      </a>
+      <a
+        href="/dashboard/resources"
+        class="px-3 py-1 rounded-md hover:bg-sky-50 
+          {{ 'bg-sky-200 text-sky-800' if tab == 'resources' else 'text-gray-700' }}"
+      >
+        📚 &nbsp;Resources
+      </a>
+      <a
+        href="/dashboard/ai"
+        class="px-3 py-1 rounded-md hover:bg-sky-50 
+          {{ 'bg-sky-200 text-sky-800' if tab == 'ai' else 'text-gray-700' }}"
+      >
+        🤖 &nbsp;AI Therapist
+      </a>
+      <a
+        href="/dashboard/guided_breathing"
+        class="px-3 py-1 rounded-md hover:bg-sky-50 
+          {{ 'bg-sky-200 text-sky-800' if tab == 'guided_breathing' else 'text-gray-700' }}"
+      >
+        🌬 &nbsp;Guided Breathing
+      </a>
+      <a
+        href="/dashboard/mindfulness_challenge"
+        class="px-3 py-1 rounded-md hover:bg-sky-50 
+          {{ 'bg-sky-200 text-sky-800' if tab == 'mindfulness_challenge' else 'text-gray-700' }}"
+      >
+        🎯 &nbsp;Mindfulness Challenge
+      </a>
+      <a
+        href="/dashboard/crisis_support"
+        class="px-3 py-1 rounded-md hover:bg-sky-50 
+          {{ 'bg-sky-200 text-sky-800' if tab == 'crisis_support' else 'text-gray-700' }}"
+      >
+        🚨 &nbsp;Crisis Support
+      </a>
+
+      <a
+        href="/dashboard/forum"
+        class="px-3 py-1 rounded-md hover:bg-sky-50 
+          {{ 'bg-sky-200 text-sky-800' if tab == 'crisis_support' else 'text-gray-700' }}"
+      >
+        💬 &nbsp;Online Forum
+      </a>
+
+      <a
+        href="/dashboard/check_in"
+        class="px-3 py-1 rounded-md hover:bg-sky-50 
+          {{ 'bg-sky-200 text-sky-800' if tab == 'crisis_support' else 'text-gray-700' }}"
+      >
+        🗓️ &nbsp;Check In
+      </a>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="flex flex-col w-full p-6">
+    {% include 'dashboard_views/' + tab + '.html' %}
+  </main>
+</div>
+{% endblock %}

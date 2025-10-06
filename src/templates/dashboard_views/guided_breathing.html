@@ -1,0 +1,81 @@
+<div class="flex flex-col w-full min-h-screen pt-16 bg-gradient-to-br from-sky-50 to-indigo-50 items-center justify-start">
+
+  <h2 class="text-4xl font-light text-sky-500 mb-32 text-center">
+    🌬 3-Minute Guided Breathing
+  </h2>
+
+  <!-- Breathing Container -->
+  <div class="flex flex-col items-center gap-20">
+
+    <!-- Breathing Circle -->
+    <div id="breath-circle"
+         class="w-60 h-60 rounded-full bg-sky-400 flex items-center justify-center text-white text-6xl shadow-2xl transition-transform duration-[6000ms] ease-in-out">
+      💨
+    </div>
+
+    <!-- Instruction Text -->
+    <p id="breath-instruction"
+       class="text-3xl font-light text-sky-700 opacity-0 transition-opacity duration-500 text-center">
+      Get ready...
+    </p>
+
+    <!-- Progress Bar -->
+    <div class="w-96 h-4 bg-gray-300 rounded-full overflow-hidden">
+      <div id="progress-bar" class="h-full bg-sky-400 w-0 transition-all duration-500"></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const circle = document.getElementById('breath-circle');
+const instruction = document.getElementById('breath-instruction');
+const progressBar = document.getElementById('progress-bar');
+
+// 3-minute session (180 seconds) divided into small cycles
+const session = [
+  { text: "Breathe In", scale: 1.5, duration: 4000 },
+  { text: "Hold", scale: 1.5, duration: 2000 },
+  { text: "Breathe Out", scale: 1, duration: 4000 },
+  { text: "Hold", scale: 1, duration: 2000 },
+  { text: "Slow Breathe In", scale: 1.42, duration: 5000 },
+  { text: "Hold", scale: 1.52, duration: 2000 },
+  { text: "Slow Breathe Out", scale: 1, duration: 5000 },
+  { text: "Deep Breathe In", scale: 1.55, duration: 5000 },
+  { text: "Hold", scale: 1.55, duration: 2000 },
+  { text: "Deep Breathe Out", scale: 1, duration: 5000 },
+  { text: "Gentle Breathe In", scale: 1.48, duration: 4000 },
+  { text: "Hold", scale: 1.58, duration: 2000 },
+  { text: "Gentle Breathe Out", scale: 1, duration: 4000 },
+  { text: "Relaxed Breathe In", scale: 1.5, duration: 4000 },
+  { text: "Hold", scale: 1.5, duration: 2000 },
+  { text: "Relaxed Breathe Out", scale: 1, duration: 4000 },
+  { text: "Calm Breathe In", scale: 1.52, duration: 4000 },
+  { text: "Hold", scale: 1.52, duration: 2000 },
+  { text: "Calm Breathe Out", scale: 1, duration: 4000 },
+];
+
+let step = 0;
+let totalSteps = session.length;
+
+function nextStep() {
+  const { text, scale, duration } = session[step];
+
+  // Update instruction
+  instruction.style.opacity = 0;
+  setTimeout(() => {
+    instruction.textContent = text;
+    instruction.style.opacity = 1;
+    circle.style.transform = `scale(${scale})`;
+  }, 300);
+
+  // Update progress
+  const progressPercent = ((step + 1) / totalSteps) * 100;
+  progressBar.style.width = `${progressPercent}%`;
+
+  step = (step + 1) % totalSteps;
+  setTimeout(nextStep, duration);
+}
+
+nextStep();
+</script>

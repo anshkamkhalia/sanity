@@ -1,0 +1,13 @@
+[
+    {
+        "id": "669e4cc6-1a61-4000-92c6-b11486f8b802",
+        "sender": "anshkamkhalia@gmail.com",
+        "question": "Where to buy hamburgers?",
+        "likes": 2,
+        "replies": {
+            "anshkamkhalia@gmail.com": "at neil house",
+            "wannabannaomaot@gma.com": "no at ur house"
+        },
+        "date_posted": "2025-09-08"
+    }
+]

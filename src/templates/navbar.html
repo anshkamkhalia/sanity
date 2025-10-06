@@ -1,0 +1,54 @@
+<nav
+  class="ss-navbar fixed top-0 left-0 w-full bg-white border-b border-gray-200 z-50 px-6 md:px-8 py-4 flex items-center justify-between shadow-sm"
+>
+  <!-- Logo -->
+  <div class="flex items-center gap-3">
+    <img
+      src="https://img.icons8.com/color/48/foam-bubbles.png"
+      alt="SanityStation Logo"
+      width="30"
+      height="30"
+    />
+    <h2 class="text-xl font-extrabold text-sky-500 tracking-tight">
+      SanityStation
+    </h2>
+  </div>
+
+  <!-- Nav Links -->
+  <div class="hidden md:flex flex-row gap-6 text-gray-700 font-medium">
+    <a href="#features" class="hover:text-sky-500 transition duration-300"
+      >Features</a
+    >
+    <a href="#process" class="hover:text-sky-500 transition duration-300"
+      >Process</a
+    >
+  </div>
+
+  <!-- Dynamic Auth Button -->
+  <div class="nav-btns flex gap-4"></div>
+</nav>
+
+<script>
+  document.addEventListener("DOMContentLoaded", async () => {
+    const navBtsDiv = document.querySelector(".nav-btns");
+    if (!navBtsDiv)
+      return console.error("No element with class='nav-btns' found");
+
+    try {
+      const response = await fetch("/get-auth");
+      if (!response.ok) throw new Error("Network response was not ok");
+
+      const data = await response.json();
+
+      const btn = document.createElement("a");
+      btn.className =
+        "btn btn-outline px-4 py-2 rounded-lg hover:bg-sky-100 transition duration-300";
+      btn.href = data.logged_in ? "/dashboard" : "/login";
+      btn.textContent = data.logged_in ? "Dashboard" : "Log in";
+
+      navBtsDiv.appendChild(btn);
+    } catch (err) {
+      console.error("Error fetching auth:", err);
+    }
+  });
+</script>

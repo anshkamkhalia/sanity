@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}SanityStation{% endblock %}</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style type="text/tailwindcss">
+      @tailwind base;
+      @tailwind components;
+      @tailwind utilities;
+
+      @import url("https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap");
+
+      /* Animations */
+      @layer base {
+        @keyframes gradientShift {
+          0% {
+            background-position: 0% 50%;
+          }
+          50% {
+            background-position: 100% 50%;
+          }
+          100% {
+            background-position: 0% 50%;
+          }
+        }
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+            transform: translateY(-5px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+      }
+
+      /* Base reset + font */
+      @layer base {
+        * {
+          @apply m-0 p-0 box-border;
+        }
+        :root {
+          font-family: "Outfit", sans-serif;
+        }
+      }
+
+      /* Page-level backgrounds */
+      @layer utilities {
+        .auth-body {
+          @apply min-h-screen flex items-center justify-center;
+          background: linear-gradient(
+            -45deg,
+            #e0f2fe,
+            #bae6fd,
+            #c7d2fe,
+            #f0f9ff
+          );
+          background-size: 400% 400%;
+          animation: gradientShift 12s ease infinite;
+        }
+      }
+
+      /* Components */
+      @layer components {
+        /* Auth container + box */
+        .auth-container {
+          @apply w-full flex items-center justify-center;
+        }
+        .auth-box {
+          @apply w-[350px] text-center rounded-3xl p-10 backdrop-blur bg-white/85 transition-transform duration-300 ease-out shadow-lg;
+          box-shadow: 0 10px 30px rgba(56, 189, 248, 0.25);
+        }
+        .auth-box:hover {
+          @apply -translate-y-1;
+          box-shadow: 0 15px 35px rgba(56, 189, 248, 0.35);
+        }
+
+        /* Inputs */
+        .auth-input {
+          @apply w-full text-base rounded-xl bg-white outline-none border-2 border-sky-200 p-3 my-2 transition-all duration-200;
+        }
+        .auth-input:focus {
+          @apply border-sky-400 ring-4 ring-sky-400/20;
+        }
+
+        .input-dark {
+          @apply rounded-lg border border-gray-300 bg-white text-gray-900 outline-none focus:border-sky-400 focus:ring-4 focus:ring-sky-400/20 transition;
+        }
+
+        /* Buttons */
+        .btn {
+          @apply inline-flex items-center justify-center px-5 py-2.5 rounded-xl font-medium transition-all duration-300;
+        }
+        .btn-solid {
+          @apply text-white bg-gradient-to-r from-sky-400 to-blue-400;
+        }
+        .btn-solid:hover {
+          @apply -translate-y-0.5;
+          box-shadow: 0 8px 20px rgba(56, 189, 248, 0.4);
+        }
+        .btn-solid:active {
+          transform: scale(0.98);
+        }
+
+        .btn-outline {
+          @apply border border-sky-400 text-sky-400 bg-transparent;
+        }
+        .btn-outline:hover {
+          @apply bg-sky-50 -translate-y-0.5;
+        }
+
+        /* Error */
+        .auth-error {
+          @apply bg-red-500/10 text-red-600 p-2 rounded-md my-2 text-sm;
+          animation: fadeIn 0.4s ease;
+        }
+
+        /* Navbar */
+        .ss-navbar {
+          @apply fixed top-0 left-0 w-screen bg-white border-b border-gray-200 z-50 px-8 py-4 flex items-center justify-between;
+        }
+
+        /* Features */
+
+        .features {
+          @apply grid grid-cols-3 gap-7 w-screen h-full p-10 place-items-center;
+        }
+
+        .features div {
+          @apply bg-white h-full rounded-xl w-[200px] shadow-md;
+        }
+      }
+    </style>
+  </head>
+
+  <body class="bg-white text-gray-800 font-[Outfit]">
+    <!-- Navbar (fixed full-width) -->
+    {% include 'navbar.html' %}
+
+    <!-- Page Content -->
+    <main class="pt-[75px]">{% block content %}{% endblock %}</main>
+  </body>
+</html>

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Therapist Chatbot</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+  <style>
+    /* Typing dots */
+    .typing-dots span {
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      margin: 0 2px;
+      background-color: #0284c7;
+      border-radius: 50%;
+      animation: blink 1.4s infinite both;
+    }
+    .typing-dots span:nth-child(1) { animation-delay: 0s; }
+    .typing-dots span:nth-child(2) { animation-delay: 0.2s; }
+    .typing-dots span:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes blink {
+      0%, 80%, 100% { opacity: 0; transform: scale(0.7); }
+      40% { opacity: 1; transform: scale(1); }
+    }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-sky-50 to-indigo-50 min-h-screen p-4">
+
+  <div class="flex items-center justify-center min-h-[calc(100vh-80px)]">
+    <div class="bg-white rounded-3xl shadow-2xl flex flex-col p-6 animate__animated animate__fadeInUp w-auto max-w-2xl h-[80vh]">
+
+      <h1 class="text-5xl font-extrabold text-center mb-6 text-sky-400 animate__animated animate__fadeInDown">
+        🤖 Therapist Chatbot
+      </h1>
+
+      <!-- Chat Box -->
+      <div id="chat-box" class="flex-1 overflow-y-auto p-4 border border-sky-400 rounded-2xl mb-4 bg-sky-50 space-y-4">
+        <!-- Messages appear here -->
+      </div>
+
+      <!-- Input Form -->
+      <form id="chat-form" class="flex space-x-3">
+        <input type="text" id="user-input" placeholder="Type your message..." required
+               class="flex-1 p-3 border border-sky-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-400 text-lg">
+        <button type="submit" 
+                class="bg-sky-400 text-white px-6 py-3 rounded-lg hover:bg-sky-500 transition duration-300 text-lg">
+          Send
+        </button>
+      </form>
+
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById("chat-form");
+    const chatBox = document.getElementById("chat-box");
+    const input = document.getElementById("user-input");
+
+    function addMessage(sender, message, isAI=false) {
+        const p = document.createElement("p");
+        p.innerHTML = `<strong>${sender}:</strong> ${message}`;
+        if (isAI) {
+            p.className = "text-sky-400"; // fix multiple classes
+        } else {
+            p.className = "text-right text-gray-800"; // fix multiple classes
+        }
+        chatBox.appendChild(p);
+        chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    function addTypingIndicator() {
+        const p = document.createElement("p");
+        p.id = "typing-indicator";
+        p.className = "text-sky-400";
+        p.innerHTML = "<strong>Therapist AI:</strong> <span id='dots'>⠋</span>";
+        chatBox.appendChild(p);
+        chatBox.scrollTop = chatBox.scrollHeight;
+
+        const dotsEl = document.getElementById("dots");
+        let i = 0;
+        const dots = ["⠋","⠙","⠹","⠸","⠼","⠴","⠦","⠧","⠇","⠏"];
+        const interval = setInterval(() => {
+            dotsEl.textContent = dots[i % dots.length];
+            i++;
+        }, 100);
+        return interval;
+    }
+
+    form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const userMessage = input.value.trim();
+        if (!userMessage) return;
+
+        addMessage("You", userMessage);
+        input.value = "";
+
+        const typingInterval = addTypingIndicator();
+
+        try {
+            // Use absolute Flask URL if needed
+            const res = await fetch("/dashboard/ai", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ message: userMessage })
+            });
+
+            // Check if response is JSON
+            if (!res.ok) throw new Error("Network response not ok");
+
+            const data = await res.json();
+            addMessage("Therapist AI", data.reply || "No response.", true);
+
+        } catch (err) {
+            console.error("Error fetching AI:", err);
+            addMessage("Therapist AI", "Sorry, something went wrong.", true);
+        } finally {
+            clearInterval(typingInterval);
+            const typingEl = document.getElementById("typing-indicator");
+            if (typingEl) chatBox.removeChild(typingEl);
+        }
+    });
+  </script>
+
+</body>
+</html>

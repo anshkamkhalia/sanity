@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ thread.question }}</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-6">
+
+  <div class="flex justify-center w-full">
+    <div class="bg-white shadow-xl rounded-2xl p-8 w-full max-w-5xl">
+      <!-- Thread Content -->
+      <h1 class="text-xl md:text-2xl font-bold text-sky-400 mb-3 text-center break-words">
+        {{ thread.question }}
+      </h1>
+      <p class="text-base text-gray-600 text-center mb-4">
+        Posted by <span class="font-medium">{{ thread.sender }}</span> on {{ thread.date_posted }}
+      </p>
+
+      <!-- Like Button -->
+      <form method="POST" action="{{ url_for('like_thread', thread_id=thread.id) }}" class="flex justify-center mb-6">
+        <button 
+          type="submit"
+          class="px-4 py-2 rounded-xl bg-pink-400 text-white font-semibold shadow-md hover:bg-pink-500 transition-all duration-300 hover:scale-105 text-base"
+        >
+          👍 Like ({{ thread.likes }})
+        </button>
+      </form>
+
+  <!-- Replies -->
+  <h2 class="text-lg font-semibold mb-3 text-center">Replies</h2>
+  <ul class="space-y-3 mb-6">
+    {% for sender, text in thread.replies.items() %}
+      <li class="bg-gray-50 p-4 rounded-lg shadow text-gray-700 text-base break-words">
+        <span class="font-semibold text-sky-500">{{ sender }}</span>: {{ text }}
+      </li>
+    {% else %}
+      <p class="text-gray-500 italic text-center text-base">No replies yet. Start the conversation!</p>
+    {% endfor %}
+  </ul>
+
+
+      <!-- Reply Form -->
+      <form method="POST" action="{{ url_for('add_reply', thread_id=thread.id) }}" class="flex flex-col gap-3">
+        <textarea 
+          name="reply" 
+          class="w-full px-4 py-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-400 transition-all resize-none text-base"
+          placeholder="Write your reply..."
+          rows="3"
+        ></textarea>
+        <div class="flex justify-center">
+          <button 
+            type="submit" 
+            class="px-4 py-2 rounded-xl bg-sky-400 text-white font-semibold shadow-md hover:bg-sky-500 transition-all duration-300 hover:scale-105 text-base"
+          >
+            💬 Reply
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+</body>
+</html>

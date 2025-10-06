@@ -1,0 +1,52 @@
+{% extends "layout.html" %} {% block title %}Login{% endblock %} {% block
+content %} 
+<main
+  class="pt-[80px] min-h-[calc(100vh-25vh)] flex items-center justify-center"
+>
+  <div class="auth-container">
+    <div class="auth-box">
+      <h2 class="text-2xl font-semibold mb-2 text-sky-400">Login</h2>
+      <form method="POST" action="/login">
+        <input
+          class="auth-input"
+          type="email"
+          name="email"
+          placeholder="Email"
+          required
+        />
+        <input
+          class="auth-input"
+          type="password"
+          name="password"
+          placeholder="Password"
+          required
+        />
+
+        {% if error %}
+        <div class="auth-error">{{ error }}</div>
+        {% endif %}
+
+        <div class="flex flex-col gap-3 items-center mt-4">
+          <button
+            class="btn btn-solid"
+            type="submit"
+            name="action"
+            value="signup"
+          >
+            Start your mindfulness journey
+          </button>
+
+          <button
+            class="btn btn-outline"
+            type="submit"
+            name="action"
+            value="login"
+          >
+            Continue your journey
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</main>
+{% endblock %}

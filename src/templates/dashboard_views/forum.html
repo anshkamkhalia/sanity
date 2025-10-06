@@ -1,0 +1,64 @@
+<div class="flex w-full justify-center">
+  <div class="bg-white shadow-xl rounded-2xl p-8 w-full max-w-5xl transition-all duration-300">
+    <h1 class="text-3xl font-extrabold text-sky-400 mb-6 text-center">💬 Community Forum</h1>
+
+    <!-- New Thread Button -->
+    <form method="post" class="mb-6 flex justify-center">
+      <input type="hidden" value="new_thread" name="form_name">
+      <button 
+        type="submit" 
+        id="new_thread"
+        class="px-5 py-2 rounded-xl bg-sky-400 text-white font-semibold shadow-md hover:bg-sky-500 transition-all duration-300 hover:scale-105"
+      >
+        + Create New Thread
+      </button>
+    </form>
+
+    <!-- Ask a Question Form -->
+    {% if create_new_thread %}
+      <form method="POST" class="fade-slide show flex flex-col gap-4 bg-sky-50 p-5 rounded-xl border border-sky-200 shadow-sm">
+        <input type="hidden" value="submit_question" name="form_name">
+        <label for="question" class="text-gray-700 font-medium" maxlength="750">What's on your mind?</label>
+        <input 
+          type="text" 
+          name="question" 
+          id="question" 
+          class="w-full px-4 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-400 transition-all"
+          placeholder="Type your question..."
+        >
+        <div class="flex justify-end">
+          <button 
+            type="submit" 
+            class="px-4 py-2 rounded-xl bg-sky-400 text-white font-semibold shadow-md hover:bg-sky-500 transition-all duration-300 hover:scale-105"
+          >
+            🚀 Post
+          </button>
+        </div>
+      </form>
+    {% endif %}
+
+    <!-- Threads List -->
+    <div class="mt-8 space-y-4">
+      {% for thread in threads %}
+        <a href="{{ url_for('thread_page', thread_id=thread.id) }}" 
+           class="block fade-slide show p-5 bg-gray-50 rounded-xl border border-gray-200 shadow-sm hover:shadow-md hover:bg-sky-50 transition-all duration-300">
+          <h2 class="text-lg font-semibold text-gray-800">{{ thread.question }}</h2>
+          <p class="text-sm text-gray-500 mt-1">Posted by <span class="text-sky-400 font-medium">{{ thread.sender }}</span> on {{ thread.date_posted }}</p>
+          
+          <div class="flex items-center justify-between mt-3 text-sm text-gray-600">
+            <div class="flex items-center gap-2">
+              <span class="px-2 py-1 bg-sky-100 text-sky-600 rounded-lg text-xs font-semibold">
+                👍 {{ thread.likes }}
+              </span>
+              <span class="px-2 py-1 bg-gray-100 text-gray-600 rounded-lg text-xs font-semibold">
+                💬 {{ thread.replies|length }} replies
+              </span>
+            </div>
+          </div>
+        </a>
+      {% else %}
+        <p class="text-gray-500 text-center italic">No threads yet. Be the first to start one!</p>
+      {% endfor %}
+    </div>
+  </div>
+</div>
